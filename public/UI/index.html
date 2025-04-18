@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạng Xã Hội</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar-left">
+            <div class="sidebar-top">
+                <div class="logo-container">
+                    <img src="../img/logo.png" alt="Logo Web" class="logo">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-bar">
+                </div>
+            </div>
+            <div class="sidebar-bottom">
+                <button class="btn"><i class="fas fa-home"></i> Trang chủ</button>
+                <button class="btn"><i class="fa-solid fa-message"></i> Tin nhắn</button>
+                <button class="btn"><i class="fas fa-bell"></i> Thông báo</button>
+                <button class="btn" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+            </div>
+        </aside>
+
+        <main class="feed">
+            <!-- Phần Status -->
+            <div class="status-container">
+                <div class="avatar-container">
+                    <img src="" alt="Avatar" class="avatar" id="avatar-link">
+                </div>
+                <div class="status-box" id="status-input-area">
+                    <textarea placeholder="Bạn đang nghĩ gì?" class="status-input" readonly></textarea>
+                </div>
+            </div>
+            <div id="post-list"></div>
+        </main>
+
+        <aside class="sidebar right">
+            <h2>Danh sách bạn bè</h2>
+            <p>Chưa có bạn bè nào</p>
+            <h2>Gợi ý kết bạn</h2>
+            <p>Không có gợi ý</p>
+        </aside>
+    </div>
+
+    <!-- Nền mờ + Modal đăng bài -->
+    <div id="overlay" class="overlay"></div>
+
+    <div id="post-modal" class="modal">
+        <h2>Tạo bài viết</h2>
+        <select id="privacy-select">
+            <option value="public">Công khai</option>
+            <option value="friends">Bạn bè</option>
+            <option value="private">Chỉ mình tôi</option>
+        </select>
+        <textarea id="post-text" placeholder="Bạn đang nghĩ gì?" rows="4"></textarea>
+        <input type="file" id="image-upload" accept="image/*">
+        <img id="image-preview" style="display: none; width: 100%; margin-top: 10px; border-radius: 10px;" alt="Xem trước ảnh">
+        <br>
+        <button class="btn" style="margin-top: 10px;" onclick="createPost()">Đăng bài</button>
+    </div>
+
+    <script src="../js/index.js"></script>
+</body>
+</html>

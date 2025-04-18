@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #7a0101;
+    color: #333;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    width: 90%;
+    margin-top: 20px;
+    height: 100vh;
+}
+.btn i {
+    margin-right: 15px; /* hoặc 20px nếu bạn muốn rộng hơn nữa */
+}
+
+.sidebar {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    height: 91.5vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.sidebar:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+}
+.sidebar-top {
+    background-color: #ffffff;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+.sidebar-bottom {
+    background-color: #ffffff;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    border-radius: 15px;
+    height: 81vh;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+.btn {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    height: 70px;
+    text-align: left;
+
+}
+
+.btn:hover {
+    background: #bd2323;
+    color: white;
+}
+
+.feed {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    height: 91.5vh;
+    overflow-y: scroll; /* hoặc auto */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+.feed::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+.post {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+}
+
+.post:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.username {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.time {
+    font-size: 12px;
+    color: #777;
+}
+
+.post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 12px;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    transition: color 0.2s;
+}
+
+.actions button:hover {
+    color: #1877f2;
+}
+
+.comments {
+    display: none;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 12px;
+    animation: fadeIn 0.3s ease;
+}
+.comment-time {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.comment .avatar {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+.comment-content {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.like-btn {
+    font-size: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: black;
+    transition: color 0.3s ease, transform 0.2s;
+}
+
+.like-btn.liked {
+    color: red;
+    transform: scale(1.2);
+}
+
+/* Status */
+.status-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #7a0101;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-container {
+    margin-right: 15px;
+}
+
+.status-box {
+    flex: 1;
+}
+
+.status-input {
+    width: 90%;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    resize: none;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.status-input:focus {
+    outline: none;
+    border-color: #1877f2;
+}
+
+/* Modal */
+#status-modal {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+/* Nền mờ */
+.overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.5);
+z-index: 999;
+}
+
+/* Modal đăng bài */
+.modal {
+visibility: hidden;
+opacity: 0;
+pointer-events: none;
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: white;
+width: 400px;
+max-width: 95%;
+padding: 20px;
+border-radius: 12px;
+z-index: 1000;
+box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+visibility: visible;
+opacity: 1;
+pointer-events: auto;
+}
+
+.modal h2 {
+margin-top: 0;
+margin-bottom: 15px;
+font-size: 20px;
+text-align: center;
+}
+
+.modal select,
+.modal textarea,
+.modal input[type="file"] {
+width: 100%;
+margin-bottom: 12px;
+padding: 10px;
+font-size: 14px;
+border-radius: 8px;
+border: 1px solid #ccc;
+}
+
+.modal textarea {
+resize: vertical;
+}

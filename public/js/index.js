@@ -27,19 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
     imageUploadInput.addEventListener("change", function () {
         const file = this.files[0];
         if (file) {
-            const fileName = file.name;
-            const filePath = `../img/${fileName}`;
-            fetch(filePath)
-                .then(response => {
-                    if (response.ok) {
-                        imagePreview.src = filePath;
-                        imagePreview.style.display = "block";
-                    } else {
-                        console.error("File ảnh không tồn tại:", filePath);
-                        alert("Ảnh không tồn tại trên server. Vui lòng kiểm tra lại.");
-                    }
-                })
-                .catch(err => console.error("Lỗi khi tải ảnh:", err));
+            const reader = new FileReader();
+    
+            // Khi FileReader đọc xong file
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result; // Gán URL của ảnh vào src
+                imagePreview.style.display = "block"; // Hiển thị ảnh preview
+            };
+    
+            reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
+        } else {
+            imagePreview.style.display = "none"; // Ẩn preview nếu không có file
         }
     });
 

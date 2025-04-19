@@ -3,32 +3,52 @@ const router = express.Router();
 const Post = require('../model/Post');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+const axios = require('axios');
+const FormData = require('form-data'); // Import thư viện form-data
 
-// Cấu hình multer để lưu file vào thư mục img
+// Multer config
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../public/img')); // Thư mục lưu ảnh
+        cb(null, path.join(__dirname, '../public/img'));
     },
     filename: (req, file, cb) => {
         const uniqueName = `${Date.now()}-${file.originalname}`;
-        cb(null, uniqueName); // Tên file duy nhất
+        cb(null, uniqueName);
     }
 });
-
 const upload = multer({ storage });
 
-// Tạo bài viết mới
+// Tạo bài viết mới và phân loại ảnh
 router.post('/create', upload.single('image'), async (req, res) => {
     try {
         const { userId, status, privacy } = req.body;
-        const image = req.file ? req.file.filename : null; // Lấy tên file nếu có
+        const image = req.file ? req.file.filename : null;
+
+        let predictedType = 'none'; // Mặc định
+
+        // Nếu có ảnh, gửi ảnh đến API phân loại
+        if (image) {
+            const imagePath = path.join(__dirname, '../public/img', image);
+            const formData = new FormData();
+            formData.append('image', fs.createReadStream(imagePath));
+
+            const response = await axios.post('https://fe29-104-197-122-151.ngrok-free.app/predict', formData, {
+                headers: formData.getHeaders()
+            });
+
+            if (response.data && response.data.prediction) {
+                predictedType = response.data.prediction; // Gán nhãn vào type
+            }
+        }
 
         const newPost = new Post({
             userId,
             status,
             image,
             privacy,
-            time: new Date().toLocaleString()
+            time: new Date().toLocaleString(),
+            type: predictedType // 👈 Gán nhãn phân loại vào đây
         });
 
         await newPost.save();

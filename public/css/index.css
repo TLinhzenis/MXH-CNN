@@ -203,6 +203,7 @@ body {
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
+    position: relative;
 }
 
 .logo {

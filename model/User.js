@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   phone: { type: String },
   
   // 👇 Gán đường dẫn tới ảnh trong thư mục public
-  avatar: { type: String, default: 'logo.png' }, 
+  avatar: { type: String, default: 'default-avatar.jpg' }, 
 
   status: { type: String, default: 'offline' }
 }, { timestamps: true });

@@ -103,6 +103,24 @@ router.patch('/update-status', async (req, res) => {
       res.status(500).json({ message: "Lỗi server", error });
   }
 });
+// Tìm kiếm người dùng theo tên hoặc số điện thoại
+router.get('/search', async (req, res) => {
+  const query = req.query.q;
+
+  try {
+    const users = await User.find({
+      $or: [
+        { fullName: { $regex: query, $options: 'i' } },
+        { phone: { $regex: query, $options: 'i' } }
+      ]
+    }).select('fullName phone avatar status'); // chỉ lấy thông tin cần thiết
+
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
 
   
 module.exports = router;

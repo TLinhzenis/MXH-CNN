@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mạng Xã Hội</title>
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/search.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -12,12 +13,14 @@
         <aside class="sidebar-left">
             <div class="sidebar-top">
                 <div class="logo-container">
-                    <img src="../img/logo.png" alt="Logo Web" class="logo">
+                    <img src="../img/Zen.jpg" alt="Logo Web" class="logo">
                     <input type="text" placeholder="Tìm kiếm..." class="search-bar">
+                    <div class="search-history-list"></div>
+
                 </div>
             </div>
             <div class="sidebar-bottom">
-                <button class="btn"><i class="fas fa-home"></i> Trang chủ</button>
+                <button class="btn" id="btn-home"><i class="fas fa-home"></i> Trang chủ</button>
                 <button class="btn"><i class="fa-solid fa-message"></i> Tin nhắn</button>
                 <button class="btn"><i class="fas fa-bell"></i> Thông báo</button>
                 <button class="btn" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
@@ -59,9 +62,11 @@
         <input type="file" id="image-upload" accept="image/*">
         <img id="image-preview" style="display: none; width: 100%; margin-top: 10px; border-radius: 10px;" alt="Xem trước ảnh">
         <br>
-        <button class="btn" style="margin-top: 10px;" onclick="createPost()">Đăng bài</button>
+        <button class="btn" style="margin-top: 10px;" id="submit-post-button">Đăng bài</button>
+
     </div>
 
     <script src="../js/index.js"></script>
+    <script src="../js/search.js"></script>
 </body>
 </html>

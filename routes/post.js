@@ -19,45 +19,59 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Tạo bài viết mới và phân loại ảnh
+// Tạo bài viết mới
 router.post('/create', upload.single('image'), async (req, res) => {
     try {
         const { userId, status, privacy } = req.body;
         const image = req.file ? req.file.filename : null;
 
-        let predictedType = 'none'; // Mặc định
-
-        // Nếu có ảnh, gửi ảnh đến API phân loại
-        if (image) {
-            const imagePath = path.join(__dirname, '../public/img', image);
-            const formData = new FormData();
-            formData.append('image', fs.createReadStream(imagePath));
-
-            const response = await axios.post('https://fe29-104-197-122-151.ngrok-free.app/predict', formData, {
-                headers: formData.getHeaders()
-            });
-
-            if (response.data && response.data.prediction) {
-                predictedType = response.data.prediction; // Gán nhãn vào type
-            }
-        }
-
+        // Khởi tạo bài viết với trạng thái 'pending'
         const newPost = new Post({
             userId,
             status,
             image,
             privacy,
             time: new Date().toLocaleString(),
-            type: predictedType // 👈 Gán nhãn phân loại vào đây
+            type: 'pending' // Trạng thái "pending" khi chưa phân loại
         });
 
+        // Lưu bài viết tạm thời
         await newPost.save();
-        res.status(201).json({ message: 'Tạo bài viết thành công!', post: newPost });
+
+        res.status(201).json({ message: 'Bài viết đang được tạo!', postId: newPost._id });
+
+        // Nếu có ảnh, gửi ảnh đi phân loại
+        if (image) {
+            classifyImageAndUpdatePost(newPost._id, image); // Phân loại và cập nhật
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Lỗi tạo bài viết', details: err.message });
     }
 });
+
+// Hàm phân loại hình ảnh và cập nhật bài viết
+async function classifyImageAndUpdatePost(postId, image) {
+    try {
+        const imagePath = path.join(__dirname, '../public/img', image);
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(imagePath));
+
+        const response = await axios.post('https://315c-34-169-100-12.ngrok-free.app/predict', formData, {
+            headers: formData.getHeaders()
+        });
+
+        let predictedType = 'none';
+        if (response.data && response.data.prediction) {
+            predictedType = response.data.prediction; // Gán nhãn phân loại vào type
+        }
+
+        // Cập nhật trạng thái phân loại cho bài viết
+        await Post.findByIdAndUpdate(postId, { type: predictedType });
+    } catch (err) {
+        console.error("Lỗi phân loại hình ảnh:", err);
+    }
+}
 
 // Lấy tất cả bài viết
 router.get('/', async (req, res) => {
@@ -68,6 +82,20 @@ router.get('/', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Không thể lấy bài viết' });
+    }
+});
+
+// Lấy bài viết theo ID
+router.get('/:id', async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id).populate('userId', 'fullName avatar');
+        if (!post) {
+            return res.status(404).json({ error: 'Bài viết không tìm thấy' });
+        }
+        res.json({ post });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Lỗi lấy bài viết' });
     }
 });
 

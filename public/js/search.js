@@ -32,7 +32,6 @@ function showSearchHistory() {
     historyList.style.display = 'block';
 }
 
-
 // Thực hiện tìm kiếm
 async function triggerSearch(query) {
     if (!query) return;
@@ -52,13 +51,16 @@ async function triggerSearch(query) {
             const userDiv = document.createElement('div');
             userDiv.className = 'user-search-result';
             userDiv.innerHTML = `
-                <div class="user-info">
-                    <img src="../img/${user.avatar}" class="avatar" alt="Avatar">
-                    <div>
-                        <strong>${user.fullName}</strong><br>
-                        <span>${user.phone}</span><br>
-                        <small>Trạng thái: ${user.status}</small>
+                <div class="user-info" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="../img/${user.avatar}" class="avatar" alt="Avatar">
+                        <div style="margin-left: 10px;">
+                            <strong>${user.fullName}</strong><br>
+                            <span>${user.phone}</span><br>
+                            <small>Trạng thái: ${user.status}</small>
+                        </div>
                     </div>
+                    <button class="btn-add-friend" data-userid="${user._id}">Kết bạn</button>
                 </div>
                 <hr>
             `;
@@ -100,5 +102,21 @@ historyList.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
     if (!searchInput.contains(e.target) && !historyList.contains(e.target)) {
         historyList.style.display = 'none';
+    }
+});
+
+// Sự kiện click nút kết bạn
+postList.addEventListener('click', async function(e) {
+    if (e.target.classList.contains('btn-add-friend')) {
+        const toUserId = e.target.getAttribute('data-userid');
+        const fromUserId = localStorage.getItem('userId'); // Lưu userId khi đăng nhập
+
+        const res = await fetch('http://localhost:5000/api/friend/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fromUserId, toUserId })
+        });
+        const data = await res.json();
+        alert(data.message);
     }
 });

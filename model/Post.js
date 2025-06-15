@@ -5,10 +5,12 @@ const postSchema = new mongoose.Schema({
   status: { type: String, required: true },
   image: { type: String },
   time: { type: String, unique: true },
-  type: { type: String,default: 'none' },
+  type: { type: String, default: 'none' },
   reaction: { type: String, default: '0' },
-  comment: { type: String, default: '0' },
-  privacy: { type: String }, 
+  comment: { type: Number, default: 0 },
+  privacy: { type: String, enum: ['public', 'friends', 'private'], default: 'public' },
+  location: { type: String, default: "" },
+  userReactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Thêm dòng này
 }, { timestamps: true });
 
 module.exports = mongoose.model('Post', postSchema);

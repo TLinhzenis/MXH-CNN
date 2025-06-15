@@ -6,6 +6,7 @@
     <title>Mạng Xã Hội</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/search.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -16,13 +17,18 @@
                     <img src="../img/Zen.jpg" alt="Logo Web" class="logo">
                     <input type="text" placeholder="Tìm kiếm..." class="search-bar">
                     <div class="search-history-list"></div>
-
                 </div>
             </div>
             <div class="sidebar-bottom">
                 <button class="btn" id="btn-home"><i class="fas fa-home"></i> Trang chủ</button>
                 <button class="btn"><i class="fa-solid fa-message"></i> Tin nhắn</button>
-                <button class="btn"><i class="fas fa-bell"></i> Thông báo</button>
+                <!-- Đặt dropdown thông báo ngay sau nút chuông -->
+                <div style="position: relative; width: 100%;">
+                    <button class="btn" id="btn-bell"><i class="fas fa-bell"></i> Thông báo</button>
+                    <div id="notification-dropdown" class="notification-dropdown" style="display:none; position:absolute; left:0; top:100%; background:#fff; border:1px solid #ccc; border-radius:8px; min-width:250px; z-index:1000;">
+                        <div id="notification-list" style="max-height:300px; overflow-y:auto;"></div>
+                    </div>
+                </div>
                 <button class="btn" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
             </div>
         </aside>
@@ -52,20 +58,58 @@
     <div id="overlay" class="overlay"></div>
 
     <div id="post-modal" class="modal">
-        <h2>Tạo bài viết</h2>
-        <select id="privacy-select">
-            <option value="public">Công khai</option>
-            <option value="friends">Bạn bè</option>
-            <option value="private">Chỉ mình tôi</option>
-        </select>
-        <textarea id="post-text" placeholder="Bạn đang nghĩ gì?" rows="4"></textarea>
-        <input type="file" id="image-upload" accept="image/*">
-        <img id="image-preview" style="display: none; width: 100%; margin-top: 10px; border-radius: 10px;" alt="Xem trước ảnh">
-        <br>
-        <button class="btn" style="margin-top: 10px;" id="submit-post-button">Đăng bài</button>
-
+        <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img id="modal-user-avatar" src="../img/default-avatar.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <div>
+                    <div id="modal-user-name" style="font-weight:600;">Tên người dùng</div>
+                    <select id="privacy-select" style="font-size:13px;padding:2px 8px;margin-top:2px;border-radius:6px;">
+                        <option value="public">Công khai</option>
+                        <option value="friends">Bạn bè</option>
+                        <option value="private">Chỉ mình tôi</option>
+                    </select>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closePostModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <textarea id="post-text" placeholder="Bạn đang nghĩ gì?" rows="4" style="border-radius:18px;padding:16px 18px;font-size:16px;"></textarea>
+            <div class="image-upload-container">
+                <label class="image-upload-label" for="image-upload">
+                    <i class="fas fa-image"></i>
+                    Thêm ảnh
+                </label>
+                <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                <div id="image-preview-wrapper" style="position:relative;display:none;margin-top:10px;max-width:220px;">
+                    <img id="image-preview" alt="Xem trước ảnh" style="display:block;width:100%;max-width:220px;max-height:180px;border-radius:10px;object-fit:cover;">
+                    <button id="remove-image-btn" style="position:absolute;top:4px;right:4px;background:#fff;border:none;border-radius:50%;width:24px;height:24px;box-shadow:0 1px 4px rgba(0,0,0,0.12);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" id="submit-post-button" style="width:100%;background:#1877f2;color:#fff;font-weight:600;font-size:16px;border-radius:8px;">Đăng bài</button>
+        </div>
     </div>
 
+    <!-- Modal chi tiết bài viết -->
+    <div id="post-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chi tiết bài viết</h2>
+                <button class="modal-close" id="close-detail-modal">&times;</button>
+            </div>
+            <div class="post-detail-scrollable">
+                <div id="post-detail-content"></div><hr>
+                <div id="comment-list"></div>
+            </div>
+            <div id="comment-section">
+                <textarea id="comment-input" placeholder="Nhập bình luận..."></textarea>
+                <button id="submit-comment">Gửi</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="../js/index.js"></script>
     <script src="../js/search.js"></script>
 </body>

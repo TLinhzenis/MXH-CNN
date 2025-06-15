@@ -8,9 +8,10 @@ const userSchema = new mongoose.Schema({
   phone: { type: String },
   
   // 👇 Gán đường dẫn tới ảnh trong thư mục public
-  avatar: { type: String, default: 'default-avatar.jpg' }, 
+  avatar: { type: String, default: 'default-avatar.jpg' },
 
-  status: { type: String, default: 'offline' }
+  status: { type: String, default: 'offline' },
+  tag: { type: String, default: "" }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

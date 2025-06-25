@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhắn tin - Mạng Xã Hội</title>
+    <link rel="stylesheet" href="../css/message.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="messenger-container">
+        <!-- Sidebar: Danh sách bạn bè -->
+        <aside class="messenger-sidebar">
+            <div class="sidebar-header" style="display: flex; align-items: center; gap: 10px;">
+                <div class="logo-container" style="cursor:pointer;" onclick="window.location.href='index.html'">
+                    <img src="../img/Zen.jpg" alt="Logo Web" class="logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                </div>
+                <input type="text" id="search-friend" placeholder="Tìm kiếm bạn bè..." style="flex:1;">
+            </div>
+            <ul id="friend-list" class="friend-list"></ul>
+        </aside>
+        <!-- Main: Khung chat -->
+        <main class="messenger-main">
+            <div class="chat-header" id="chat-header">
+                <img id="chat-avatar" src="../img/default-avatar.jpg" class="chat-avatar">
+                <span id="chat-username">Chọn một người để bắt đầu trò chuyện</span>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <div class="chat-placeholder">Chọn một người bạn để bắt đầu nhắn tin.</div>
+            </div>
+            <div class="chat-footer">
+                <div id="message-form" style="display: flex; align-items: center; gap: 8px;">
+                    <input type="file" id="chat-image-input" accept="image/*" style="display:none;">
+                    <button type="button" id="image-upload-btn" title="Gửi ảnh"><i class="fas fa-image"></i></button>
+                    <input type="text" id="message-input" placeholder="Nhập tin nhắn..." autocomplete="off">
+                    <button type="button" id="send-btn" title="Gửi tin nhắn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+                <div id="image-preview-wrapper" style="display:none;position:relative;">
+                    <img id="image-preview" alt="Xem trước ảnh" style="max-width:120px;max-height:120px;border-radius:8px;">
+                    <button id="remove-image-btn" style="position:absolute;top:4px;right:4px;background:#fff;border:none;border-radius:50%;width:24px;height:24px;box-shadow:0 1px 4px rgba(0,0,0,0.12);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                </div>
+            </div>
+        </main>
+        <!-- Sidebar: Thông tin người chat -->
+        <aside class="messenger-info">
+            <div id="info-content">
+                <img id="info-avatar" src="../img/default-avatar.jpg" class="info-avatar">
+                <h3 id="info-username">Tên người dùng</h3>
+                <p id="info-status">Trạng thái: ...</p>
+            </div>
+        </aside>
+    </div>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="../js/message.js"></script>
+</body>
+</html> 

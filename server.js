@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const http = require('http'); 
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const server = http.createServer(app); // Tạo server trước
@@ -18,20 +20,23 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
+app.use(session({
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 global.onlineUsers = {};
 
-io.on('connection', (socket) => {
-    socket.on('register', (userId) => {
-        global.onlineUsers[userId] = socket.id;
-    });
+const Message = require('./model/Message');
+const Post = require('./model/Post');
+const User = require('./model/User');
 
-    socket.on('disconnect', () => {
-        for (const [userId, id] of Object.entries(global.onlineUsers)) {
-            if (id === socket.id) delete global.onlineUsers[userId];
-        }
-    });
-});
+const { setupSocketHandlers } = require('./routes/socketHandlers');
+
+// Setup socket handlers
+setupSocketHandlers(io);
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('✅ Kết nối MongoDB thành công'))
@@ -39,12 +44,17 @@ mongoose.connect(MONGODB_URI)
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
-const postRoutes = require('./routes/post');
+const { router: postRoutes } = require('./routes/post');
 app.use('/api/posts', postRoutes);
 const friendRoutes = require('./routes/friend');
 app.use('/api/friend', friendRoutes);
 const commentRoutes = require('./routes/comment');
 app.use('/api/comment', commentRoutes);
+const { router: messageRoutes } = require('./routes/message');
+app.use('/api/message', messageRoutes);
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
+
 app.set('io', io);
 
 server.listen(PORT, () => {

@@ -23,7 +23,7 @@ document.getElementById("saveCustomerBtn").addEventListener("click", async funct
 
       // Sau khi đăng ký thành công, chuyển hướng đến trang login
       setTimeout(function() {
-          window.location.href = '/public/UI/loginUser.html';  // Đổi đường dẫn nếu cần
+          window.location.href = '/UI/loginUser.html';  // Đổi đường dẫn nếu cần
       }, 2000); // Thời gian delay 2 giây trước khi chuyển hướng
   } else {
       // Hiển thị thông báo lỗi

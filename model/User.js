@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String, default: 'default-avatar.jpg' },
 
   status: { type: String, default: 'offline' },
-  tag: { type: String, default: "" }
+  tag: { type: String, default: "" },
+  role: { type: String, enum: ['user', 'admin', 'partner'], default: 'user' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../model/User');
+const ListFriend = require('../model/ListFriend');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 // Đăng ký người dùng mới
@@ -65,7 +66,8 @@ router.post('/login', async (req, res) => {
           fullName: user.fullName,
           phone: user.phone,
           status: user.status,
-          avatar: user.avatar
+          avatar: user.avatar,
+          role: user.role
         }
       });
   
@@ -121,6 +123,58 @@ router.get('/search', async (req, res) => {
     res.status(500).json({ message: 'Lỗi server' });
   }
 });
+router.get('/suggest/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user || !user.tag) return res.json({ users: [] });
 
+    // Lấy danh sách bạn bè đã xác nhận
+    const friends = await ListFriend.find({
+        status: "friend",
+        $or: [
+            { userId1: userId },
+            { userId2: userId }
+        ]
+    });
+
+    // Lấy ra id bạn bè (khác userId hiện tại)
+    const friendIds = friends.map(f =>
+        f.userId1.toString() === userId ? f.userId2.toString() : f.userId1.toString()
+    );
+
+    // Lấy user cùng tag, không phải bạn, không phải chính mình
+    let users = await User.find({
+        tag: user.tag,
+        _id: { $ne: userId, $nin: friendIds }
+    }).select('_id fullName avatar');
+
+    // Lấy ngẫu nhiên tối đa 5 người
+    if (users.length > 5) {
+        users = users.sort(() => 0.5 - Math.random()).slice(0, 5);
+    }
+
+    res.json({ users });
+});
+// Đăng nhập admin
+router.post('/admin/login', async (req, res) => {
+  const { username, password } = req.body;
+  const User = require('../model/User');
+  try {
+    const user = await User.findOne({ username });
+    if (!user || user.role !== 'admin') {
+      return res.status(401).json({ success: false, message: 'Tài khoản không hợp lệ hoặc không phải admin!' });
+    }
+    const bcrypt = require('bcryptjs');
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Sai mật khẩu!' });
+    }
+    req.session = req.session || {};
+    req.session.adminId = user._id;
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi máy chủ!' });
+  }
+});
   
 module.exports = router;

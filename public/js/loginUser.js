@@ -17,11 +17,12 @@ document.getElementById("loginBtn").addEventListener("click", async function (e)
   
       // 👇 Lưu thông tin người dùng vào localStorage
       localStorage.setItem("authToken", data.token);
-localStorage.setItem("userId", data.user._id);
-localStorage.setItem("fullName", data.user.fullName);
-localStorage.setItem("phone", data.user.phone);
-localStorage.setItem("status", data.user.status);
-localStorage.setItem("avatar", data.user.avatar);
+      localStorage.setItem("userId", data.user._id);
+      localStorage.setItem("fullName", data.user.fullName);
+      localStorage.setItem("phone", data.user.phone);
+      localStorage.setItem("status", data.user.status);
+      localStorage.setItem("avatar", data.user.avatar);
+      localStorage.setItem("role", data.user.role);
 
       // Gửi yêu cầu cập nhật status của người dùng thành "online"
       await fetch(`http://localhost:5000/api/auth/update-status`, {
@@ -34,7 +35,7 @@ localStorage.setItem("avatar", data.user.avatar);
     });
   
       // 👉 Chuyển hướng tới index.html
-      window.location.href = "/public/UI/index.html";
+      window.location.href = "/UI/index.html";
     } else {
       document.querySelector(".error-message").textContent = data.message;
       document.querySelector(".error-message").style.display = "block";

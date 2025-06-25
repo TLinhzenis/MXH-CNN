@@ -658,3 +658,52 @@ body {
 #image-preview-wrapper.active {
     display: block !important;
 }
+
+/* Three-dot menu styles */
+.post-menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.post-menu-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+.post-menu-btn:hover {
+    background: #f0f2f5;
+}
+.post-menu-list {
+    min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 6px;
+    padding: 6px 0;
+    background: #fff;
+    position: absolute;
+    right: 0;
+    top: 28px;
+    z-index: 100;
+    border: 1px solid #eee;
+}
+.post-menu-list button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.post-menu-list button:hover {
+    background: #f0f2f5;
+}
+.report-count {
+    color: #e53935;
+    font-size: 13px;
+    margin-left: 8px;
+    font-weight: 500;
+}

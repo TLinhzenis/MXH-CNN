@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="admin-dashboard">
+    <aside class="sidebar">
+      <h2>Admin</h2>
+      <ul>
+        <li class="menu-item active" data-section="stats">Thống kê</li>
+        <li class="menu-item" data-section="users">Quản lý tài khoản</li>
+        <li class="menu-item" data-section="posts">Quản lý bài viết</li>
+        <li class="menu-item" id="adminLogout">Đăng xuất</li>
+      </ul>
+    </aside>
+    <main class="main-content">
+      <section id="statsSection" class="content-section">
+        <h3>Thống kê bài viết</h3>
+        <div class="charts-container">
+          <div>
+            <h4>Type phổ biến nhất: <span id="mostPopularType"></span></h4>
+            <canvas id="typeChart"></canvas>
+          </div>
+          <div>
+            <h4>Location phổ biến nhất: <span id="mostPopularLocation"></span></h4>
+            <canvas id="locationChart"></canvas>
+          </div>
+          <div>
+            <h4>Tag phổ biến nhất: <span id="mostPopularTag"></span></h4>
+            <canvas id="tagChart"></canvas>
+          </div>
+        </div>
+        <div class="stats-today">
+          <p><b>Số bài đăng trong ngày:</b> <span id="postsToday"></span></p>
+          <p><b>Người dùng đăng ký mới trong ngày:</b> <span id="usersToday"></span></p>
+        </div>
+      </section>
+      <section id="usersSection" class="content-section" style="display:none;">
+        <h3>Quản lý tài khoản</h3>
+        <button id="addUserBtn">Thêm tài khoản</button>
+        <table id="usersTable">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Họ tên</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- User rows here -->
+          </tbody>
+        </table>
+        <div id="userFormModal" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <form id="userForm">
+              <input type="hidden" id="userId" />
+              <input type="text" id="userUsername" placeholder="Username" required />
+              <input type="email" id="userEmail" placeholder="Email" required />
+              <input type="text" id="userName" placeholder="Họ tên" required />
+              <input type="text" id="userPhone" placeholder="Phone" required />
+              <select id="userRole">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <input type="password" id="userPassword" placeholder="Mật khẩu (bỏ trống nếu không đổi)" />
+              <button type="submit">Lưu</button>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="postsSection" class="content-section" style="display:none;">
+        <h3>Quản lý bài viết</h3>
+        <div class="filter-controls">
+          <button id="showAllPosts" class="filter-btn active">Tất cả bài viết</button>
+          <button id="showReportedPosts" class="filter-btn">Chỉ hiển thị bài viết bị report</button>
+        </div>
+        <table id="postsTable">
+          <thead>
+            <tr>
+              <th>Người đăng</th>
+              <th>Nội dung</th>
+              <th>Hình ảnh</th>
+              <th>Loại</th>
+              <th>Địa điểm</th>
+              <th>Reaction</th>
+              <th>Comment</th>
+              <th>Report</th>
+              <th>Ngày tạo</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Post rows here -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+  <script src="../js/admin-dashboard.js"></script>
+</body>
+</html> 

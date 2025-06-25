@@ -10,6 +10,7 @@ const postSchema = new mongoose.Schema({
   comment: { type: Number, default: 0 },
   privacy: { type: String, enum: ['public', 'friends', 'private'], default: 'public' },
   location: { type: String, default: "" },
+  report: { type: Number, default: 0 },
   userReactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Thêm dòng này
 }, { timestamps: true });
 

@@ -319,5 +319,56 @@ window.viewImage = function(imageSrc) {
   };
 };
 
+// === Chatbot Gemini cho admin ===
+const chatbotForm = document.getElementById('chatbot-form');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotMessages = document.getElementById('chatbot-messages');
+
+let chatHistory = [];
+
+chatbotForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const question = chatbotInput.value.trim();
+  if (!question) return;
+  // Hiển thị câu hỏi của admin
+  chatHistory.push({ sender: 'admin', text: question });
+  renderChatbotMessages();
+  chatbotInput.value = '';
+  chatbotInput.disabled = true;
+  // Hiển thị loading
+  chatHistory.push({ sender: 'bot', text: '<i>Đang trả lời...</i>', loading: true });
+  renderChatbotMessages();
+  try {
+    const res = await fetch('/api/admin/chatbot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question })
+    });
+    const data = await res.json();
+    // Xóa loading
+    chatHistory = chatHistory.filter(m => !m.loading);
+    if (data.answer) {
+      chatHistory.push({ sender: 'bot', text: data.answer });
+    } else {
+      chatHistory.push({ sender: 'bot', text: 'Không nhận được phản hồi từ chatbot.' });
+    }
+  } catch (err) {
+    chatHistory = chatHistory.filter(m => !m.loading);
+    chatHistory.push({ sender: 'bot', text: 'Lỗi kết nối chatbot.' });
+  }
+  renderChatbotMessages();
+  chatbotInput.disabled = false;
+  chatbotInput.focus();
+});
+
+function renderChatbotMessages() {
+  chatbotMessages.innerHTML = chatHistory.map(m =>
+    `<div style="margin-bottom:8px;text-align:${m.sender==='admin'?'right':'left'}">
+      <span style="display:inline-block;padding:8px 12px;border-radius:8px;max-width:90%;background:${m.sender==='admin'?'#40739e':'#f1f2f6'};color:${m.sender==='admin'?'#fff':'#222'};font-style:${m.loading?'italic':'normal'};">${m.text}</span>
+    </div>`
+  ).join('');
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
 // Khởi động mặc định là thống kê
 loadStats(); 

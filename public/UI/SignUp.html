@@ -53,7 +53,7 @@
       <div class="container-login100">
         <div class="wrap-login-content">
           <div class="wrap-login100">
-            <form class="login100-form validate-form">
+            <form class="login100-form validate-form" id="signupForm">
               <span class="login100-form-title p-b-26"> SIGN UP </span>
 
               <div
@@ -65,8 +65,12 @@
                   class="input100"
                   type="text"
                   name="username"
+                  required
+                  minlength="3"
+                  maxlength="20"
                 />
                 <span class="focus-input100" data-placeholder="Username"></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
 
               <div
@@ -78,8 +82,11 @@
                   class="input100"
                   type="password"
                   name="pass"
+                  required
+                  minlength="6"
                 />
                 <span class="focus-input100" data-placeholder="Password"></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
 
               <div
@@ -91,11 +98,13 @@
                   class="input100"
                   type="password"
                   name="RPpass"
+                  required
                 />
                 <span
                   class="focus-input100"
                   data-placeholder="Repeat password"
                 ></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
               <div
                 class="wrap-input100 validate-input"
@@ -106,25 +115,46 @@
                   class="input100"
                   type="text"
                   name="fullName"
+                  required
+                  minlength="2"
+                  maxlength="50"
                 />
                 <span
                   class="focus-input100"
                   data-placeholder="Full Name"
                 ></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
               <div
                 class="wrap-input100 validate-input"
-                data-validate="Enter username"
+                data-validate="Enter valid email"
               >
-                <input id="email" class="input100" type="text" name="email" />
+                <input 
+                  id="email" 
+                  class="input100" 
+                  type="email" 
+                  name="email" 
+                  required
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                />
                 <span class="focus-input100" data-placeholder="Email"></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
               <div
                 class="wrap-input100 validate-input"
-                data-validate="Enter username"
+                data-validate="Enter valid phone number"
               >
-                <input id="phone" class="input100" type="text" name="phone" />
+                <input 
+                  id="phone" 
+                  class="input100" 
+                  type="tel" 
+                  name="phone" 
+                  required
+                  pattern="[0-9]{10,11}"
+                  title="Phone number must be 10-11 digits"
+                />
                 <span class="focus-input100" data-placeholder="Phone"></span>
+                <div class="field-error" style="color: red; font-size: 12px; display: none;"></div>
               </div>
               <div
                 class="error-message"

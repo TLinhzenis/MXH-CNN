@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const Post = require('../model/Post');
 const User = require('../model/User');
+const axios = require('axios');
 
 // Middleware kiểm tra admin (import lại từ server.js)
 function requireAdmin(req, res, next) {
@@ -146,5 +147,64 @@ router.delete('/posts/:id', requireAdmin, async (req, res) => {
     res.status(500).json({ success: false, message: 'Lỗi máy chủ!' });
   }
 });
+
+// API chatbot thay thế Gemini: sử dụng GPT-3.5 từ OpenRouter
+router.post('/chatbot', requireAdmin, async (req, res) => {
+  try {
+    const { question } = req.body;
+    let prompt = question;
+
+    if (question.includes('@phantich')) {
+      const typeAgg = await Post.aggregate([
+        { $group: { _id: '$type', count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+      ]);
+      const locationAgg = await Post.aggregate([
+        { $group: { _id: '$location', count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+      ]);
+      const tagAgg = await User.aggregate([
+        { $group: { _id: '$tag', count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+      ]);
+      prompt = `Dữ liệu thống kê:
+- Các type bài viết: ${JSON.stringify(typeAgg)}
+- Các location: ${JSON.stringify(locationAgg)}
+- Tag người dùng: ${JSON.stringify(tagAgg)}
+Câu hỏi: ${question.replace('@phantich', '').trim()}`;
+    }
+
+    const openrouterKey = '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'; // Thay bằng API key OpenRouter thật
+    const openrouterEndpoint = 'https://openrouter.ai/api/v1/chat/completions';
+
+    const response = await axios.post(openrouterEndpoint, {
+      model: 'deepseek/deepseek-r1-0528-qwen3-8b:free',
+
+      messages: [
+        { role: 'system', content: 'Bạn là một trợ lý quản trị hệ thống mạng xã hội' },
+        { role: 'user', content: prompt }
+      ]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${openrouterKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'http://localhost', // hoặc URL frontend thực tế
+        'X-Title': 'AdminChatbot'
+      }
+    });
+
+    const answer = response.data?.choices?.[0]?.message?.content || 'Không có phản hồi từ OpenRouter.';
+    res.json({ answer });
+
+  } catch (err) {
+    let msg = err.message;
+    if (err.response?.data?.error?.message) {
+      msg += ' | ' + err.response.data.error.message;
+    }
+    console.error('Lỗi chatbot OpenRouter:', msg);
+    res.status(500).json({ error: 'Lỗi chatbot OpenRouter', details: msg });
+  }
+});
+
 
 module.exports = router; 

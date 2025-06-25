@@ -40,6 +40,17 @@
           <p><b>Người dùng đăng ký mới trong ngày:</b> <span id="usersToday"></span></p>
         </div>
       </section>
+      <!-- Chatbot Gemini cho admin -->
+      <section id="chatbotSection" class="content-section" style="margin-top: 2rem;">
+        <h3>Chatbot Gemini (Hỏi đáp & Phân tích thống kê)</h3>
+        <div id="chatbot-box" style="background:#fff;padding:16px 20px;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.08);max-width:500px;">
+          <div id="chatbot-messages" style="min-height:120px;max-height:300px;overflow-y:auto;margin-bottom:12px;"></div>
+          <form id="chatbot-form" style="display:flex;gap:8px;">
+            <input id="chatbot-input" type="text" placeholder="Nhập câu hỏi cho chatbot... (@phantich để phân tích dữ liệu)" style="flex:1;padding:8px 12px;border-radius:6px;border:1px solid #ccc;" required />
+            <button type="submit" style="padding:8px 16px;border-radius:6px;background:#40739e;color:#fff;border:none;">Gửi</button>
+          </form>
+        </div>
+      </section>
       <section id="usersSection" class="content-section" style="display:none;">
         <h3>Quản lý tài khoản</h3>
         <button id="addUserBtn">Thêm tài khoản</button>
